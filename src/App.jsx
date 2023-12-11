@@ -1,10 +1,16 @@
-function App() {
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import CreateCourse from "./pages/CreateCourse";
 
+function App() {
   return (
-    <div className="text-red-600">
-      App
-    </div>
-  )
+    <>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/create-course" element={<CreateCourse />} />
+      </Routes>
+    </>
+  );
 }
 
-export default App
+export default App;
