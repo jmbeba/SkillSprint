@@ -1,6 +1,8 @@
 import CourseCard from "./CourseCard";
 
 const CourseList = () => {
+ 
+
   return (
     <div className="mt-10 w-full flex justify-center">
       <div className=" grid grid-cols-3 gap-10">
