@@ -1,4 +1,10 @@
-import React from "react";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle
+} from "@/components/ui/navigation-menu";
 import { Link, useLocation } from "react-router-dom";
 
 const NavLinks = () => {
@@ -17,16 +23,19 @@ const NavLinks = () => {
 
   return (
     <div className="flex items-center gap-4">
-      {links.map(({ text, link }) => (
-        <Link
-          className={`relative after:absolute after:content-[''] after:bottom-[-2px] after:left-0 after:bg-black after:w-full after:h-[2px] ${
-            link !== location.pathname ? "after:hidden" : ""
-          }`}
-          to={link}
-        >
-          {text}
-        </Link>
-      ))}
+      <NavigationMenu>
+        <NavigationMenuList>
+          {links.map(({text, link}) => (
+            <NavigationMenuItem>
+              <Link to={link}>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  {text}
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          ))}
+        </NavigationMenuList>
+      </NavigationMenu>
     </div>
   );
 };
