@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import CreateCourse from "./pages/CreateCourse";
-import Navbar from "./sections/Navbar";
+import Navbar from "./components/Navbar";
 import { ThemeProvider } from "./components/ThemeProvider";
 
 function App() {
