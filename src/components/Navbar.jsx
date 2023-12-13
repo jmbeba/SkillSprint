@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
-import Logo from "../components/Logo";
-import NavLinks from "../components/NavLinks";
+import Logo from "./Logo";
+import NavLinks from "./NavLinks";
 import { FaArrowRightLong } from "react-icons/fa6";
-import { ModeToggle } from "@/components/Mode-toggle";
+import { ModeToggle } from "@/components/ModeToggle";
 
 const Navbar = () => {
   return (
