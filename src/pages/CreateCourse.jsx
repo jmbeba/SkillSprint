@@ -1,8 +1,11 @@
+import CreateCourseForm from '@/components/CreateCourseForm'
 import React from 'react'
 
 const CreateCourse = () => {
   return (
-    <div>CreateCourse</div>
+    <div className='flex h-full items-center justify-center'>
+      <CreateCourseForm/>
+    </div>
   )
 }
 
