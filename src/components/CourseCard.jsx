@@ -10,6 +10,7 @@ import {
 import { Button } from "./ui/button";
 import { Clock3 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 const CourseCard = () => {
   return (
@@ -23,13 +24,15 @@ const CourseCard = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Badge variant={'secondary'}>Business</Badge>
+        <Badge variant={"secondary"}>Business</Badge>
         <p className="mt-4 flex items-center gap-3">
           <Clock3 size={18} /> <span>5 weeks</span>
         </p>
       </CardContent>
       <CardFooter>
-        <Button variant="default">See more details</Button>
+        <Button asChild variant="default">
+          <Link to={"/courses/id"}>See more details</Link>
+        </Button>
       </CardFooter>
     </Card>
   );
