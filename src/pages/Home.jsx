@@ -7,7 +7,7 @@ const Home = () => {
  const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <div>
+    <div className='pb-10'>
       {isLoading ? (
         <div className='w-full h-screen flex flex-col items-center justify-center'>
           <Loader2 size={48} className='animate-spin'/>
