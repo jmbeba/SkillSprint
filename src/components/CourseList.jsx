@@ -1,14 +1,29 @@
 import { usePagination } from "@mantine/hooks";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Ghost } from "lucide-react";
 import CourseCard from "./CourseCard";
 import { Button } from "./ui/button";
+import { useEffect } from "react";
+import { BASE_URL } from "@/utils";
+import { useState } from "react";
 
 const CourseList = () => {
-  const mockCourses = new Array(12).fill(1);
-  const totalPages = Math.ceil(mockCourses.length / 9);
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    const fetchCourses = () => {
+      fetch(`${BASE_URL}/courses`)
+        .then((res) => res.json())
+        .then((courses) => setCourses(courses))
+        .catch((err) => console.log(err));
+    };
+
+    fetchCourses();
+  }, []);
+
+  const totalPages = Math.ceil(courses.length / 9);
 
   const limit = 9;
-  
+
   const pagination = usePagination({
     total: totalPages,
     initialPage: 1,
@@ -17,12 +32,23 @@ const CourseList = () => {
   const startIndex = (pagination.active - 1) * limit;
   const endIndex = pagination.active * limit;
 
+  if (courses.length === 0) {
+    return (
+      <div className="mt-20 w-full flex flex-col items-center">
+        <Ghost className="w-12 h-12"/>
+        <h1 className="text-[28px] font-semibold">
+          Sorry. Seems like the course list is empty.
+        </h1>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="mt-10 w-full flex justify-center">
         <div className=" grid grid-cols-3 gap-10">
-          {mockCourses.slice(startIndex, endIndex).map((_, index) => (
-            <CourseCard />
+          {courses.slice(startIndex, endIndex).map((course) => (
+            <CourseCard {...course}/>
           ))}
         </div>
       </div>

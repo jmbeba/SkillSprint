@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Button } from "./ui/button";
 
 const Image = () => {
     return (
@@ -16,10 +17,12 @@ const Image = () => {
 
 const Logo = () => {
   return (
-    <Link to={'/'} className="flex items-center gap-4 font-semibold">
-      <Image/>
-      <span>SkillSprint</span>
-    </Link>
+    <Button asChild variant='ghost'>
+      <Link to={"/"} className="flex items-center gap-4 font-semibold">
+        <Image />
+        <span>SkillSprint</span>
+      </Link>
+    </Button>
   );
 };
 
