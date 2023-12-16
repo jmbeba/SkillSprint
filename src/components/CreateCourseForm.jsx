@@ -30,6 +30,9 @@ import {
 import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { BASE_URL } from "@/utils";
 
 const courseCategories = [
   "Business",
@@ -47,6 +50,9 @@ const courseSchema = z.object({
     .max(50, {
       message: "Title must be not more than 50 characters",
     }),
+    image:z.string().url({
+      message:"The image url must be valid"
+    }),
   description: z.string().min(10, {
     message: "Description must be at least 10 characters",
   }),
@@ -59,17 +65,38 @@ const courseSchema = z.object({
 });
 
 const CreateCourseForm = () => {
+  const [isLoading, setIsLoading] = useState(false) 
+
   const createCourseForm = useForm({
     resolver: zodResolver(courseSchema),
   });
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = ({title, description, category, image, dateRange}) => {
+    setIsLoading(true);
+      fetch(`${BASE_URL}/courses`, {
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json'
+        }, 
+        body:JSON.stringify({
+          title,
+          description, 
+          category,
+          image,
+          start_date:dateRange.from,
+          end_date:dateRange.to
+        })
+      }).then((res) => {
+        setIsLoading(false)
+        createCourseForm.reset({
+          ...{ title, description, category, image, dateRange },
+        });
+      }).catch((err) => console.log(err))
   };
 
   return (
-    <div className="flex flex-col gap-4">
-    <h1 className="font-bold text-[36px]">Create course form</h1>
+    <div className="flex flex-col gap-4 pt-[10rem] pb-10">
+      <h1 className="font-bold text-[36px]">Create course form</h1>
       <Form {...createCourseForm}>
         <form
           className="w-[350px] space-y-4"
@@ -82,7 +109,7 @@ const CreateCourseForm = () => {
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <Input placeholder="John Doe" {...field} />
+                  <Input placeholder="Business 101" {...field} />
                 </FormControl>
                 <FormDescription>
                   This is the name of the course.
@@ -107,6 +134,20 @@ const CreateCourseForm = () => {
                 <FormDescription>
                   This is the description of the course.
                 </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={createCourseForm.control}
+            name="image"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Image</FormLabel>
+                <FormControl>
+                  <Input placeholder="https://unsplash.com" {...field} />
+                </FormControl>
+                <FormDescription>This is the url of the image.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -186,7 +227,10 @@ const CreateCourseForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Create</Button>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : ''}
+            {isLoading ?  'Creating course...' : 'Create'}
+          </Button>
         </form>
       </Form>
     </div>
