@@ -33,6 +33,7 @@ import { format } from "date-fns";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { BASE_URL } from "@/utils";
+import { useEffect } from "react";
 
 const courseCategories = [
   "Business",
@@ -50,49 +51,61 @@ const courseSchema = z.object({
     .max(50, {
       message: "Title must be not more than 50 characters",
     }),
-    image:z.string().url({
-      message:"The image url must be valid"
-    }),
+  image: z.string().url({
+    message: "The image url must be valid",
+  }),
   description: z.string().min(10, {
     message: "Description must be at least 10 characters",
   }),
   category: z.enum(courseCategories),
-  dateRange:z.object({
-    to:z.date(),
-    from:z.date()
-  })
-
+  dateRange: z.object({
+    to: z.date(),
+    from: z.date(),
+  }),
 });
 
 const CreateCourseForm = () => {
-  const [isLoading, setIsLoading] = useState(false) 
+  const [isLoading, setIsLoading] = useState(false);
 
   const createCourseForm = useForm({
     resolver: zodResolver(courseSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      image: "",
+    },
   });
 
-  const onSubmit = ({title, description, category, image, dateRange}) => {
+  const { isSubmitSuccessful } = createCourseForm.formState;
+  const reset = createCourseForm.reset;
+
+  const onSubmit = ({ title, description, category, image, dateRange }) => {
     setIsLoading(true);
-      fetch(`${BASE_URL}/courses`, {
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json'
-        }, 
-        body:JSON.stringify({
-          title,
-          description, 
-          category,
-          image,
-          start_date:dateRange.from,
-          end_date:dateRange.to
-        })
-      }).then((res) => {
-        setIsLoading(false)
-        createCourseForm.reset({
-          ...{ title, description, category, image, dateRange },
-        });
-      }).catch((err) => console.log(err))
+    fetch(`${BASE_URL}/courses`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        category,
+        image,
+        start_date: dateRange.from,
+        end_date: dateRange.to,
+      }),
+    })
+      .then((res) => {
+        setIsLoading(false);
+      })
+      .catch((err) => console.log(err));
   };
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <div className="flex flex-col gap-4 pt-[10rem] pb-10">
@@ -228,8 +241,8 @@ const CreateCourseForm = () => {
             )}
           />
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : ''}
-            {isLoading ?  'Creating course...' : 'Create'}
+            {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : ""}
+            {isLoading ? "Creating course..." : "Create"}
           </Button>
         </form>
       </Form>

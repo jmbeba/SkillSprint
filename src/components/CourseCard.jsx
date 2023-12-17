@@ -1,4 +1,5 @@
-import React from "react";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -7,19 +8,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "./ui/button";
 import { Clock3 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Button } from "./ui/button";
 
+import { differenceInCalendarDays, differenceInCalendarWeeks } from "date-fns";
 import { Link } from "react-router-dom";
-import { differenceInCalendarWeeks, intervalToDuration } from "date-fns";
 
-const CourseCard = ({title, description, category, start_date, end_date}) => {
-  const start = new Date(start_date)
-  const end = new Date(end_date)
+const CourseCard = ({ title, description, category, start_date, end_date }) => {
+  const start = new Date(start_date);
+  const end = new Date(end_date);
 
-  const courseDuration = differenceInCalendarWeeks(end, start)
+  let courseDuration = `${differenceInCalendarWeeks(end, start)} weeks`;
+
+  if(courseDuration == '0 weeks'){
+    courseDuration = `${differenceInCalendarDays(end, start)} days`;
+  }
 
   return (
     <Card className="w-[350px]">
@@ -34,14 +37,12 @@ const CourseCard = ({title, description, category, start_date, end_date}) => {
           </AspectRatio>
         </div>
         <CardTitle>{title}</CardTitle>
-        <CardDescription>
-          {description}
-        </CardDescription>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
         <Badge variant={"secondary"}>{category}</Badge>
         <p className="mt-4 flex items-center gap-3">
-          <Clock3 size={18} /> <span>{courseDuration} weeks</span>
+          <Clock3 size={18} /> <span>{courseDuration}</span>
         </p>
       </CardContent>
       <CardFooter>
@@ -54,5 +55,3 @@ const CourseCard = ({title, description, category, start_date, end_date}) => {
 };
 
 export default CourseCard;
-
-
