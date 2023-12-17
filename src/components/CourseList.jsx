@@ -2,23 +2,8 @@ import { usePagination } from "@mantine/hooks";
 import { ChevronLeft, ChevronRight, Ghost } from "lucide-react";
 import CourseCard from "./CourseCard";
 import { Button } from "./ui/button";
-import { useEffect } from "react";
-import { BASE_URL } from "@/utils";
-import { useState } from "react";
 
-const CourseList = () => {
-  const [courses, setCourses] = useState([]);
-
-  useEffect(() => {
-    const fetchCourses = () => {
-      fetch(`${BASE_URL}/courses`)
-        .then((res) => res.json())
-        .then((courses) => setCourses(courses))
-        .catch((err) => console.log(err));
-    };
-
-    fetchCourses();
-  }, []);
+const CourseList = ({courses}) => {
 
   const totalPages = Math.ceil(courses.length / 9);
 
@@ -48,7 +33,7 @@ const CourseList = () => {
       <div className="mt-10 w-full flex justify-center">
         <div className=" grid grid-cols-3 gap-10">
           {courses.slice(startIndex, endIndex).map((course) => (
-            <CourseCard {...course}/>
+            <CourseCard {...course} key={course.id}/>
           ))}
         </div>
       </div>
