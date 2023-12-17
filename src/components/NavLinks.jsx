@@ -26,7 +26,7 @@ const NavLinks = () => {
       <NavigationMenu>
         <NavigationMenuList>
           {links.map(({text, link}) => (
-            <NavigationMenuItem>
+            <NavigationMenuItem key={link}>
               <Link to={link}>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   {text}

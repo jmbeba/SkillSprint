@@ -13,8 +13,9 @@ import { Button } from "./ui/button";
 
 import { differenceInCalendarDays, differenceInCalendarWeeks } from "date-fns";
 import { Link } from "react-router-dom";
+import BookModal from "./BookModal";
 
-const CourseCard = ({ title, description, category, start_date, end_date }) => {
+const CourseCard = ({ id, title, description, category, start_date, end_date }) => {
   const start = new Date(start_date);
   const end = new Date(end_date);
 
@@ -46,9 +47,7 @@ const CourseCard = ({ title, description, category, start_date, end_date }) => {
         </p>
       </CardContent>
       <CardFooter>
-        <Button asChild variant="default">
-          <Link to={"/courses/id"}>See more details</Link>
-        </Button>
+        <BookModal courseId={id} courseName={title}/>
       </CardFooter>
     </Card>
   );

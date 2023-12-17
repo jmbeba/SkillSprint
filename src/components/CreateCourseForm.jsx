@@ -34,6 +34,7 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { BASE_URL } from "@/utils";
 import { useEffect } from "react";
+import { useToast } from "./ui/use-toast";
 
 const courseCategories = [
   "Business",
@@ -66,6 +67,7 @@ const courseSchema = z.object({
 
 const CreateCourseForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const createCourseForm = useForm({
     resolver: zodResolver(courseSchema),
@@ -73,6 +75,7 @@ const CreateCourseForm = () => {
       title: "",
       description: "",
       image: "",
+      category:""
     },
   });
 
@@ -97,6 +100,10 @@ const CreateCourseForm = () => {
     })
       .then((res) => {
         setIsLoading(false);
+         toast({
+           title: "Course creation successfull",
+           description: "Your course has been added to the course list",
+         });
       })
       .catch((err) => console.log(err));
   };
