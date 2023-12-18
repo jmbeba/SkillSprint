@@ -39,8 +39,10 @@ import { useToast } from "./ui/use-toast";
 const courseCategories = [
   "Business",
   "Computer Science",
-  "Food & Nutrition",
-  "Education",
+  "Data Science",
+  "Engineering",
+  "Mathematics",
+  "Physics",
 ];
 
 const courseSchema = z.object({
