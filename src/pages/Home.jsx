@@ -9,6 +9,7 @@ import SearchBar from "@/components/SearchBar";
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [courses, setCourses] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchCourses = () => {
@@ -25,6 +26,12 @@ const Home = () => {
     fetchCourses();
   }, []);
 
+  const renderedCourses = courses.filter(({title}) => {
+    if(!search) return true;
+
+    return title.includes(search);
+  })
+
   return (
     <div className="pb-10">
       {isLoading ? (
@@ -34,8 +41,8 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          <SearchBar/>
-          <CourseList courses={courses} />
+          <SearchBar setSearch={setSearch}/>
+          <CourseList courses={renderedCourses} />
         </div>
       )}
     </div>
