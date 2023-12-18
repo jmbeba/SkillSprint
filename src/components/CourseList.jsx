@@ -50,6 +50,7 @@ const CourseList = ({courses}) => {
           <Button
             onClick={() => pagination.setPage(page)}
             variant={`${pagination.active === page ? "default" : "outline"}`}
+            key={page}
             size="icon"
             disabled={page === "dots"}
           >
