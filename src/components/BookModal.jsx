@@ -28,6 +28,7 @@ const BookModal = ({ courseId, courseName }) => {
 
   const [formData, setFormData] = useState(initialData);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -53,6 +54,9 @@ const BookModal = ({ courseId, courseName }) => {
     })
       .then((res) => res.json())
       .then((res) => {
+
+        setIsOpen(false)
+
         if (res.message) {
             toast({
                 title:"Enrollment successful",
@@ -67,22 +71,17 @@ const BookModal = ({ courseId, courseName }) => {
         }
 
         setIsLoading(false);
-      })
-      .then(() => {
-        navigate("/");
-      })
-      .catch((err) => {
+      }).catch(() => {
         toast({
           variant: "destructive",
           title: "Uh oh! Something went wrong.",
-          description: "There was a problem with your request.",
-          action: <ToastAction altText="Try again">Try again</ToastAction>,
+          description: "There was a problem with your request.", 
         }); 
       });
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="default">Enroll now</Button>
       </DialogTrigger>
