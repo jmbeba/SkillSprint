@@ -6,6 +6,9 @@ import { useEffect } from "react";
 import { BASE_URL } from "@/utils";
 import SearchBar from "@/components/SearchBar";
 import FilterBar from "@/components/FilterBar";
+import { Badge } from "@/components/ui/badge";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,12 +28,11 @@ const Home = () => {
     },
   ]);
   const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState("default")
+  const [sortBy, setSortBy] = useState("default");
 
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
-  const [selectedCategories, setSelectedCategories] = useState([])
-
-  console.log(selectedCategories)
+  console.log(selectedCategories);
 
   useEffect(() => {
     const fetchCourses = () => {
@@ -47,23 +49,29 @@ const Home = () => {
     fetchCourses();
   }, []);
 
-  const renderedCourses = courses.filter(({title}) => {
-    if(!search) return true;
+  const renderedCourses = courses.filter(({ title, category }) => {
+    const categoryMatch =
+      selectedCategories.length > 0
+        ? selectedCategories.includes(category)
+        : true;
 
-    return title.includes(search);
+    const searchMatch = search ? title.includes(search) : true;
+
+    return categoryMatch && searchMatch;
   });
 
-  renderedCourses.sort((a,b) => {
-    if(sortBy === 'default') return true;
+  console.log(selectedCategories.length);
+  renderedCourses.sort((a, b) => {
+    if (sortBy === "default") return true;
 
-    if(sortBy === 'a-z'){
-        return a.title > b.title ? 1 : -1;
+    if (sortBy === "a-z") {
+      return a.title > b.title ? 1 : -1;
     }
 
-    if(sortBy === 'z-a'){
-      return a.title < b.title ? 1 : -1 
+    if (sortBy === "z-a") {
+      return a.title < b.title ? 1 : -1;
     }
-  })  
+  });
 
   return (
     <div className="pb-10">
@@ -76,8 +84,36 @@ const Home = () => {
         <div>
           <div className="mt-5 mx-14 flex items-center justify-between">
             <SearchBar setSearch={setSearch} />
-            <FilterBar sortBy={sortBy} setSortBy={setSortBy} selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} />
+            <FilterBar
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              selectedCategories={selectedCategories}
+              setSelectedCategories={setSelectedCategories}
+            />
           </div>
+          {selectedCategories.length > 0 && (
+            <div className="mx-14 mt-7 flex items-center">
+              Filtered by:
+              <div className="ml-4 flex items-center gap-2">
+                {selectedCategories.map((category) => (
+                  <Badge className="h-7 flex items-center gap-4 hover:bg-primary ">
+                    <span>{category}</span>
+                    <X
+                      size={14}
+                      className="hover:bg-secondary/40 rounded-full cursor-pointer"
+                      onClick={() => {
+                        const filteredCategories = selectedCategories.filter(
+                          (cat) => category !== cat
+                        );
+
+                        setSelectedCategories(filteredCategories);
+                      }}
+                    />
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
           <CourseList courses={renderedCourses} />
         </div>
       )}
