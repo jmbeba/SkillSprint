@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 
-const FilterBar = ({ setSelectedCategories, selectedCategories }) => {
+const FilterBar = ({ sortBy, setSortBy, setSelectedCategories, selectedCategories }) => {
   const sortOptions = [
     {
       value: "default",
@@ -59,10 +59,10 @@ const FilterBar = ({ setSelectedCategories, selectedCategories }) => {
           <AccordionItem value="item-1">
             <AccordionTrigger>Sort</AccordionTrigger>
             <AccordionContent>
-              <RadioGroup className="ml-5" defaultValue={sortOptions[0].value}>
+              <RadioGroup className="ml-5" defaultValue={sortBy}>
                 {sortOptions.map(({ value, name }) => (
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value={value} id={value} />
+                    <RadioGroupItem onClick={() => setSortBy(value)}  value={value} id={value} />
                     <Label htmlFor={value}>{name}</Label>
                   </div>
                 ))}

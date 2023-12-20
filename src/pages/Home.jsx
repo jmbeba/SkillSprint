@@ -25,31 +25,45 @@ const Home = () => {
     },
   ]);
   const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState("default")
+
 
   const [selectedCategories, setSelectedCategories] = useState([])
 
   console.log(selectedCategories)
 
-  // useEffect(() => {
-  //   const fetchCourses = () => {
-  //     setIsLoading(true);
-  //     fetch(`${BASE_URL}/courses`)
-  //       .then((res) => res.json())
-  //       .then((courses) => {
-  //         setCourses(courses);
-  //         setIsLoading(false);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   };
+  useEffect(() => {
+    const fetchCourses = () => {
+      setIsLoading(true);
+      fetch(`${BASE_URL}/courses`)
+        .then((res) => res.json())
+        .then((courses) => {
+          setCourses(courses);
+          setIsLoading(false);
+        })
+        .catch((err) => console.log(err));
+    };
 
-  //   fetchCourses();
-  // }, []);
+    fetchCourses();
+  }, []);
 
   const renderedCourses = courses.filter(({title}) => {
     if(!search) return true;
 
     return title.includes(search);
-  })
+  });
+
+  renderedCourses.sort((a,b) => {
+    if(sortBy === 'default') return true;
+
+    if(sortBy === 'a-z'){
+        return a.title > b.title ? 1 : -1;
+    }
+
+    if(sortBy === 'z-a'){
+      return a.title < b.title ? 1 : -1 
+    }
+  })  
 
   return (
     <div className="pb-10">
@@ -62,7 +76,7 @@ const Home = () => {
         <div>
           <div className="mt-5 mx-14 flex items-center justify-between">
             <SearchBar setSearch={setSearch} />
-            <FilterBar selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} />
+            <FilterBar sortBy={sortBy} setSortBy={setSortBy} selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} />
           </div>
           <CourseList courses={renderedCourses} />
         </div>
