@@ -46,8 +46,8 @@ const FilterBar = ({ setSelectedCategories, selectedCategories }) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button size="icon" variant="secondary">
-          <Filter />
+        <Button variant="secondary">
+          <Filter className="mr-2 h-4 w-4" /> Filter
         </Button>
       </SheetTrigger>
       <SheetContent>
@@ -77,6 +77,7 @@ const FilterBar = ({ setSelectedCategories, selectedCategories }) => {
                   <Checkbox
                     className="h-5 w-5 rounded-full"
                     id={category}
+                    checked={selectedCategories.includes(category)}
                     onClick={() => {
                       if (selectedCategories.includes(category)) {
                         const newSelectedCategories = selectedCategories.filter(
