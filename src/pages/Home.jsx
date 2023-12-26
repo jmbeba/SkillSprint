@@ -1,14 +1,10 @@
 import CourseList from "@/components/CourseList";
-import React from "react";
-import { useState } from "react";
-import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
-import { BASE_URL } from "@/utils";
-import SearchBar from "@/components/SearchBar";
 import FilterBar from "@/components/FilterBar";
+import SearchBar from "@/components/SearchBar";
 import { Badge } from "@/components/ui/badge";
-import { X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { BASE_URL } from "@/utils";
+import { Loader2, X } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +28,6 @@ const Home = () => {
 
   const [selectedCategories, setSelectedCategories] = useState([]);
 
-  console.log(selectedCategories);
 
   useEffect(() => {
     const fetchCourses = () => {
@@ -60,7 +55,6 @@ const Home = () => {
     return categoryMatch && searchMatch;
   });
 
-  console.log(selectedCategories.length);
   renderedCourses.sort((a, b) => {
     if (sortBy === "default") return true;
 
